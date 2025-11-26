@@ -8,7 +8,7 @@ A lightweight, elegant screen recorder for Linux built with Electron.
 
 ## 🎬 Demo
 
-https://github.com/nNoidea/Peekaboo/vid/showcase.mp4
+[https://github.com/nNoidea/Peekaboo/vid/showcase.mp4](https://github.com/nNoidea/Peekaboo/blob/main/vid/showcase.mp4)
 
 > **Note:** If the video doesn't play, [click here to download](vid/showcase.mp4) or view it directly in the repository.
 
