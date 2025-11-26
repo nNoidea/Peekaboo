@@ -113,13 +113,14 @@ Releases are automated via GitHub Actions when pushing to `main`. The version is
 
 **Automatic version bumping (via git hook):**
 
-| Commit Message Tag | Behavior |
-|--------------------|----------|
-| *(no tag)* | Auto-increment patch (`1.0.0` → `1.0.1`) |
-| `VERSION[SAME]` or `VERSION[NO]` | Keep current version |
-| `VERSION[2.0.0]` | Set version to `2.0.0` |
+| Commit Message Tag               | Behavior                                 |
+| -------------------------------- | ---------------------------------------- |
+| _(no tag)_                       | Auto-increment patch (`1.0.0` → `1.0.1`) |
+| `VERSION[SAME]` or `VERSION[NO]` | Keep current version                     |
+| `VERSION[2.0.0]`                 | Set version to `2.0.0`                   |
 
 **Examples:**
+
 ```bash
 # Auto-bump patch version
 git commit -m "Add new feature"
@@ -132,6 +133,7 @@ git commit -m "Major release VERSION[2.0.0]"
 ```
 
 **Manual version bumping (alternative):**
+
 ```bash
 npm run version:patch   # 1.0.0 → 1.0.1
 npm run version:minor   # 1.0.0 → 1.1.0
@@ -139,6 +141,7 @@ npm run version:major   # 1.0.0 → 2.0.0
 ```
 
 **Setup (first time only):**
+
 ```bash
 npm run prepare   # Installs the git hook
 ```
