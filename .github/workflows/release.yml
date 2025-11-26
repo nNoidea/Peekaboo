@@ -12,12 +12,16 @@ on:
 jobs:
     build:
         runs-on: ubuntu-latest
+        outputs:
+            version: ${{ steps.version.outputs.version }}
+            new_version: ${{ steps.version.outputs.new_version }}
 
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
               with:
                   fetch-depth: 0
+                  token: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Setup Node.js
               uses: actions/setup-node@v4
@@ -25,25 +29,54 @@ jobs:
                   node-version: "20"
                   cache: "npm"
 
+            - name: Determine version
+              id: version
+              run: |
+                  # Get commit message
+                  COMMIT_MSG=$(git log -1 --pretty=%B)
+
+                  # Check for VERSION[x.x.x] pattern in commit message
+                  if [[ "$COMMIT_MSG" =~ VERSION\[([0-9]+\.[0-9]+\.[0-9]+)\] ]]; then
+                      NEW_VERSION="${BASH_REMATCH[1]}"
+                      echo "Found explicit version: $NEW_VERSION"
+                  else
+                      # Auto-increment patch version
+                      CURRENT_VERSION=$(node -p "require('./package.json').version")
+                      IFS='.' read -ra VERSION_PARTS <<< "$CURRENT_VERSION"
+                      MAJOR="${VERSION_PARTS[0]}"
+                      MINOR="${VERSION_PARTS[1]}"
+                      PATCH="${VERSION_PARTS[2]}"
+                      NEW_PATCH=$((PATCH + 1))
+                      NEW_VERSION="${MAJOR}.${MINOR}.${NEW_PATCH}"
+                      echo "Auto-incremented version: $CURRENT_VERSION -> $NEW_VERSION"
+                  fi
+
+                  echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+                  echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+            - name: Update package.json version
+              run: |
+                  npm version ${{ steps.version.outputs.new_version }} --no-git-tag-version
+
             - name: Install dependencies
               run: npm ci
 
             - name: Build application
               run: npm run build:ci
 
-            - name: Generate version tag
-              id: version
-              run: |
-                  VERSION=$(node -p "require('./package.json').version")
-                  SHORT_SHA=$(git rev-parse --short HEAD)
-                  echo "tag=v${VERSION}-${SHORT_SHA}" >> $GITHUB_OUTPUT
-                  echo "version=${VERSION}" >> $GITHUB_OUTPUT
-
             - name: Upload artifacts
               uses: actions/upload-artifact@v4
               with:
                   name: linux-build
                   path: release/*.AppImage
+
+            - name: Commit version bump
+              run: |
+                  git config user.name "github-actions[bot]"
+                  git config user.email "github-actions[bot]@users.noreply.github.com"
+                  git add package.json
+                  git diff --staged --quiet || git commit -m "chore: bump version to ${{ steps.version.outputs.new_version }} [skip ci]"
+                  git push
 
     release:
         needs: build
@@ -52,19 +85,6 @@ jobs:
             contents: write
 
         steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
-              with:
-                  fetch-depth: 0
-
-            - name: Generate version tag
-              id: version
-              run: |
-                  VERSION=$(node -p "require('./package.json').version")
-                  SHORT_SHA=$(git rev-parse --short HEAD)
-                  echo "tag=v${VERSION}-${SHORT_SHA}" >> $GITHUB_OUTPUT
-                  echo "version=${VERSION}" >> $GITHUB_OUTPUT
-
             - name: Download artifacts
               uses: actions/download-artifact@v4
               with:
@@ -82,7 +102,7 @@ jobs:
               uses: softprops/action-gh-release@v2
               with:
                   tag_name: latest
-                  name: "Latest Build (v${{ steps.version.outputs.version }})"
+                  name: "Latest Build (v${{ needs.build.outputs.new_version }})"
                   files: release/*.AppImage
                   generate_release_notes: true
                   draft: false
