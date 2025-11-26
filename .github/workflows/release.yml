@@ -12,6 +12,8 @@ on:
 jobs:
     build:
         runs-on: ubuntu-latest
+        permissions:
+            contents: write
         outputs:
             version: ${{ steps.version.outputs.version }}
             new_version: ${{ steps.version.outputs.new_version }}
@@ -21,7 +23,7 @@ jobs:
               uses: actions/checkout@v4
               with:
                   fetch-depth: 0
-                  token: ${{ secrets.GITHUB_TOKEN }}
+                  persist-credentials: true
 
             - name: Setup Node.js
               uses: actions/setup-node@v4

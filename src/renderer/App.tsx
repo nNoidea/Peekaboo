@@ -153,6 +153,7 @@ function MainWindow() {
                                     onChange={(e) => setFormat(e.target.value)}
                                 >
                                     <option value="MP4">MP4</option>
+                                    <option value="WEBM">WEBM</option>
                                     <option value="GIF">GIF</option>
                                 </select>
 
@@ -198,8 +199,8 @@ function MainWindow() {
                                     </label>
                                 </div>
 
-                                {/* Audio controls - only for MP4 */}
-                                {format === "MP4" && (
+                                {/* Audio controls - for MP4 and WEBM */}
+                                {(format === "MP4" || format === "WEBM") && (
                                     <>
                                         <div className="vr bg-secondary opacity-50"></div>
                                         <div
