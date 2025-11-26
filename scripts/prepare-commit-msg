@@ -1,0 +1,66 @@
+#!/bin/bash
+
+# prepare-commit-msg hook: Auto-increment patch version unless VERSION tag is specified
+# This hook runs BEFORE you write your commit message, and can read/modify it
+#
+# VERSION tags in commit message:
+#   VERSION[NO] or VERSION[SAME] - Keep current version (no bump)
+#   VERSION[X.X.X]               - Set version to X.X.X
+#   (no tag)                     - Auto-increment patch version
+
+COMMIT_MSG_FILE="$1"
+COMMIT_SOURCE="$2"
+
+# Only run for regular commits (not merges, squashes, etc.)
+if [ "$COMMIT_SOURCE" = "merge" ] || [ "$COMMIT_SOURCE" = "squash" ]; then
+    exit 0
+fi
+
+# Check if any non-ignored files are staged
+if ! git diff --cached --name-only | grep -qvE '\.md$|\.gitignore$|LICENSE$|package\.json$'; then
+    # Only ignored files or package.json staged, skip
+    exit 0
+fi
+
+# Read current commit message if it exists
+COMMIT_MSG=""
+if [ -f "$COMMIT_MSG_FILE" ]; then
+    COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
+fi
+
+# Get current version
+CURRENT_VERSION=$(node -p "require('./package.json').version")
+
+# Check for VERSION[SAME] or VERSION[NO] - keep current version
+if [[ "$COMMIT_MSG" =~ VERSION\[(SAME|NO)\] ]]; then
+    echo "🔒 VERSION[SAME/NO] detected - keeping version $CURRENT_VERSION"
+    exit 0
+fi
+
+# Check for VERSION[X.X.X] - explicit version
+if [[ "$COMMIT_MSG" =~ VERSION\[([0-9]+\.[0-9]+\.[0-9]+)\] ]]; then
+    NEW_VERSION="${BASH_REMATCH[1]}"
+    if [ "$NEW_VERSION" != "$CURRENT_VERSION" ]; then
+        echo "📌 Setting version to $NEW_VERSION"
+        npm version "$NEW_VERSION" --no-git-tag-version --allow-same-version >/dev/null 2>&1
+        git add package.json
+    else
+        echo "📌 Version already at $NEW_VERSION"
+    fi
+    exit 0
+fi
+
+# No VERSION tag - auto-increment patch version
+IFS='.' read -ra VERSION_PARTS <<< "$CURRENT_VERSION"
+MAJOR="${VERSION_PARTS[0]}"
+MINOR="${VERSION_PARTS[1]}"
+PATCH="${VERSION_PARTS[2]}"
+
+NEW_PATCH=$((PATCH + 1))
+NEW_VERSION="${MAJOR}.${MINOR}.${NEW_PATCH}"
+
+echo "⬆️  Auto-incrementing version: $CURRENT_VERSION → $NEW_VERSION"
+npm version "$NEW_VERSION" --no-git-tag-version --allow-same-version >/dev/null 2>&1
+git add package.json
+
+exit 0

@@ -111,26 +111,45 @@ Contributions are welcome! Feel free to open issues or submit pull requests.
 
 Releases are automated via GitHub Actions when pushing to `main`. The version is read from `package.json`.
 
-**Bump version locally before committing:**
+**Automatic version bumping (via git hook):**
 
+| Commit Message Tag | Behavior |
+|--------------------|----------|
+| *(no tag)* | Auto-increment patch (`1.0.0` → `1.0.1`) |
+| `VERSION[SAME]` or `VERSION[NO]` | Keep current version |
+| `VERSION[2.0.0]` | Set version to `2.0.0` |
+
+**Examples:**
 ```bash
-# Bump patch version (1.0.0 → 1.0.1)
-npm run version:patch
+# Auto-bump patch version
+git commit -m "Add new feature"
 
-# Bump minor version (1.0.0 → 1.1.0)
-npm run version:minor
+# Keep same version (e.g., adding build artifacts)
+git commit -m "Add .deb build VERSION[SAME]"
 
-# Bump major version (1.0.0 → 2.0.0)
-npm run version:major
+# Jump to specific version
+git commit -m "Major release VERSION[2.0.0]"
+```
+
+**Manual version bumping (alternative):**
+```bash
+npm run version:patch   # 1.0.0 → 1.0.1
+npm run version:minor   # 1.0.0 → 1.1.0
+npm run version:major   # 1.0.0 → 2.0.0
+```
+
+**Setup (first time only):**
+```bash
+npm run prepare   # Installs the git hook
 ```
 
 **How it works:**
 
-1. Update version in `package.json` (manually or via npm scripts)
-2. Commit and push to `main`
+1. Commit your changes → version is handled based on commit message
+2. Push to `main`
 3. GitHub Actions builds and creates/replaces release for that version
 
-> **Note:** If you push the same version again, the existing release will be replaced (useful for adding new build artifacts like `.deb` files without changing the app itself).
+> **Note:** If you push the same version again, the existing release will be replaced.
 
 > **Note:** Builds only trigger on pushes to `main`. Changes to `.md` files, `.gitignore`, and `LICENSE` are ignored.
 
