@@ -33,7 +33,7 @@ I built this out of personal need — a quick tool to record my frontend develop
 
 ### AppImage (Recommended)
 
-Download the latest `Peekaboo-x.x.x.AppImage` from the [Releases](https://github.com/oguzhanabuhanoglu/Peekaboo/releases) page, make it executable, and run:
+Download the latest `Peekaboo-x.x.x.AppImage` from the [Releases](https://github.com/nNoidea/Peekaboo/releases) page, make it executable, and run:
 
 ```bash
 chmod +x Peekaboo-*.AppImage
@@ -44,7 +44,7 @@ chmod +x Peekaboo-*.AppImage
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/peekaboo.git
+git clone https://github.com/nNoidea/Peekaboo.git
 cd peekaboo
 
 # Install dependencies
