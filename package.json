@@ -9,6 +9,9 @@
         "dev:main": "tsc -p tsconfig.main.json && wait-on http://localhost:5173 && electron . --dev",
         "build": "tsc -p tsconfig.main.json && vite build && electron-builder",
         "build:ci": "tsc -p tsconfig.main.json && vite build && electron-builder --publish never",
+        "version:patch": "npm version patch --no-git-tag-version",
+        "version:minor": "npm version minor --no-git-tag-version",
+        "version:major": "npm version major --no-git-tag-version",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "build": {

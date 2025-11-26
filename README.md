@@ -109,26 +109,27 @@ Contributions are welcome! Feel free to open issues or submit pull requests.
 
 ## 🔄 Versioning & Releases
 
-Releases are automated via GitHub Actions when pushing to `main`. Use special tags in your commit message to control versioning:
+Releases are automated via GitHub Actions when pushing to `main`. The version is read from `package.json`.
 
-| Commit Message   | Behavior                                         |
-| ---------------- | ------------------------------------------------ |
-| _(no tag)_       | Auto-increment patch version (`1.0.0` → `1.0.1`) |
-| `VERSION[2.0.0]` | Set explicit version to `2.0.0`                  |
-| `VERSION[NO]`    | Rebuild same version (replaces existing release) |
-
-**Examples:**
+**Bump version locally before committing:**
 
 ```bash
-# Normal commit - auto bumps patch version
-git commit -m "Add new feature"
+# Bump patch version (1.0.0 → 1.0.1)
+npm run version:patch
 
-# Set specific version
-git commit -m "Major update VERSION[2.0.0]"
+# Bump minor version (1.0.0 → 1.1.0)
+npm run version:minor
 
-# Rebuild without version bump (e.g., adding new build artifacts)
-git commit -m "Add .deb build VERSION[NO]"
+# Bump major version (1.0.0 → 2.0.0)
+npm run version:major
 ```
+
+**How it works:**
+1. Update version in `package.json` (manually or via npm scripts)
+2. Commit and push to `main`
+3. GitHub Actions builds and creates/replaces release for that version
+
+> **Note:** If you push the same version again, the existing release will be replaced (useful for adding new build artifacts like `.deb` files without changing the app itself).
 
 > **Note:** Builds only trigger on pushes to `main`. Changes to `.md` files, `.gitignore`, and `LICENSE` are ignored.
 
