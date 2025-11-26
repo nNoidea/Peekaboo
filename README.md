@@ -8,7 +8,6 @@ A lightweight, elegant screen recorder for Linux built with Electron.
 
 ## 🎬 Demo
 
-
 https://github.com/user-attachments/assets/f7071cd9-8f07-4c10-b7ac-9580e8cbbd1e
 
 _Yes, this showcase was recorded using Peekaboo itself! 🐣_
@@ -112,13 +111,14 @@ Contributions are welcome! Feel free to open issues or submit pull requests.
 
 Releases are automated via GitHub Actions when pushing to `main`. Use special tags in your commit message to control versioning:
 
-| Commit Message | Behavior |
-|----------------|----------|
-| *(no tag)* | Auto-increment patch version (`1.0.0` → `1.0.1`) |
-| `VERSION[2.0.0]` | Set explicit version to `2.0.0` |
-| `VERSION[NO]` | Rebuild same version (replaces existing release) |
+| Commit Message   | Behavior                                         |
+| ---------------- | ------------------------------------------------ |
+| _(no tag)_       | Auto-increment patch version (`1.0.0` → `1.0.1`) |
+| `VERSION[2.0.0]` | Set explicit version to `2.0.0`                  |
+| `VERSION[NO]`    | Rebuild same version (replaces existing release) |
 
 **Examples:**
+
 ```bash
 # Normal commit - auto bumps patch version
 git commit -m "Add new feature"
