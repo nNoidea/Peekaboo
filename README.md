@@ -23,10 +23,10 @@ I built this out of personal need — a quick tool to record my frontend develop
 ## ✨ Features
 
 -   **Region Selection** — Record any portion of your screen by resizing the window
--   **Multiple Formats** — Export as MP4 or GIF
+-   **Multiple Formats** — Export as MP4, WebM, or GIF
 -   **Configurable FPS** — Choose your preferred frame rate
 -   **Mouse Cursor** — Option to show or hide the cursor in recordings
--   **Audio Recording** — Capture system audio and/or microphone (PulseAudio)
+-   **Audio Recording** — Capture system audio and/or microphone (PulseAudio) for MP4 and WebM
 -   **Persistent Settings** — Your preferences are saved between sessions
 
 ## 📦 Installation
