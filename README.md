@@ -12,7 +12,7 @@ https://github.com/nNoidea/Peekaboo/assets/vid/showcase.mp4
 
 > **Note:** If the video doesn't play, [click here to download](vid/showcase.mp4) or view it directly in the repository.
 
-*Yes, this showcase was recorded using Peekaboo itself! 🐣*
+_Yes, this showcase was recorded using Peekaboo itself! 🐣_
 
 ## 💡 Background
 
