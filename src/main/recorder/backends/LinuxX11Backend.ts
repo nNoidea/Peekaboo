@@ -18,14 +18,22 @@ export class LinuxX11Backend implements IRecorderBackend {
         const y = bounds.y;
 
         const args = [
-            "-thread_queue_size", "1024",
-            "-probesize", "10M",
-            "-f", "x11grab",
-            "-video_size", `${width}x${height}`,
-            "-framerate", `${fps}`,
-            "-draw_mouse", showMouse ? "1" : "0",
-            "-i", `${display}+${x},${y}`,
-            "-vsync", "cfr"
+            "-thread_queue_size",
+            "1024",
+            "-probesize",
+            "10M",
+            "-f",
+            "x11grab",
+            "-video_size",
+            `${width}x${height}`,
+            "-framerate",
+            `${fps}`,
+            "-draw_mouse",
+            showMouse ? "1" : "0",
+            "-i",
+            `${display}+${x},${y}`,
+            "-vsync",
+            "cfr",
         ];
 
         // Audio Logic
