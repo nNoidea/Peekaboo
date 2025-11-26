@@ -60,7 +60,7 @@ npm run build
 ## 🛠️ Requirements
 
 -   **Linux** with X11 (Wayland not currently supported)
--   **FFmpeg** (bundled via `ffmpeg-static`)
+-   **FFmpeg** — must be installed on your system (`sudo apt install ffmpeg` on Debian/Ubuntu)
 -   **PulseAudio** (for audio recording features)
 
 ## 🚀 Usage

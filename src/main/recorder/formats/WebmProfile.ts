@@ -10,15 +10,21 @@ export class WebmProfile implements IFormatProfile {
             "-c:v",
             "libvpx-vp9",
             "-crf",
-            "30", // Quality: 0-63, lower = better quality. 30 is good balance
+            "30",
             "-b:v",
-            "0", // Required for CRF mode in VP9
+            "0",
             "-deadline",
-            "realtime", // Fast encoding for real-time recording
+            "realtime",
             "-cpu-used",
-            "5", // Speed: 0-8, higher = faster but lower quality. 5 is good for realtime
+            "8", // Max speed for real-time recording
             "-row-mt",
-            "1", // Enable row-based multithreading
+            "1",
+            "-tile-columns",
+            "2", // Parallel encoding
+            "-frame-parallel",
+            "1",
+            "-threads",
+            "0", // Auto-detect threads
             "-pix_fmt",
             "yuv420p",
         ];

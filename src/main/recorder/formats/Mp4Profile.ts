@@ -7,8 +7,10 @@ export class Mp4Profile implements IFormatProfile {
     const args = [
       '-c:v', 'libx264',
       '-preset', 'ultrafast',
+      '-tune', 'zerolatency',
       '-pix_fmt', 'yuv420p',
-      '-crf', '23'
+      '-crf', '23',
+      '-threads', '0'
     ];
 
     if (audioOptions?.recordSystemAudio || audioOptions?.recordMic) {
