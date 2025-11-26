@@ -1,13 +1,14 @@
 {
   "name": "peekaboo",
   "version": "1.0.0",
-  "description": "",
+  "description": "A lightweight, elegant screen recorder for Linux",
   "main": "dist/main/main.js",
   "scripts": {
     "dev": "concurrently \"npm run dev:renderer\" \"npm run dev:main\"",
     "dev:renderer": "vite",
     "dev:main": "tsc -p tsconfig.main.json && wait-on http://localhost:5173 && electron . --dev",
     "build": "tsc -p tsconfig.main.json && vite build && electron-builder",
+    "build:ci": "tsc -p tsconfig.main.json && vite build && electron-builder --publish never",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "build": {
