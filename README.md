@@ -113,11 +113,11 @@ Releases are automated via GitHub Actions when pushing to `main`. The version is
 
 **Automatic version bumping (via git hook):**
 
-| Commit Message Tag               | Behavior                                 |
-| -------------------------------- | ---------------------------------------- |
-| _(no tag)_                       | Auto-increment patch (`1.0.0` → `1.0.1`) |
-| `VERSION[SAME]` or `VERSION[NO]` | Keep current version                     |
-| `VERSION[2.0.0]`                 | Set version to `2.0.0`                   |
+| Command                             | Behavior                                 |
+| ----------------------------------- | ---------------------------------------- |
+| `git commit -m "msg"`               | Auto-increment patch (`1.0.0` → `1.0.1`) |
+| `VERSION=SAME git commit -m "msg"`  | Keep current version                     |
+| `VERSION=2.0.0 git commit -m "msg"` | Set version to `2.0.0`                   |
 
 **Examples:**
 
@@ -126,10 +126,10 @@ Releases are automated via GitHub Actions when pushing to `main`. The version is
 git commit -m "Add new feature"
 
 # Keep same version (e.g., adding build artifacts)
-git commit -m "Add .deb build VERSION[SAME]"
+VERSION=SAME git commit -m "Add .deb build"
 
 # Jump to specific version
-git commit -m "Major release VERSION[2.0.0]"
+VERSION=2.0.0 git commit -m "Major release"
 ```
 
 **Manual version bumping (alternative):**
@@ -148,7 +148,7 @@ npm run prepare   # Installs the git hook
 
 **How it works:**
 
-1. Commit your changes → version is handled based on commit message
+1. Commit your changes → version is handled based on `VERSION` env var
 2. Push to `main`
 3. GitHub Actions builds and creates/replaces release for that version
 

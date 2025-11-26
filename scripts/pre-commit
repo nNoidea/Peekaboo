@@ -1,0 +1,58 @@
+#!/bin/bash
+
+# pre-commit hook: Auto-increment patch version
+# This runs BEFORE the commit, modifies package.json and stages it
+#
+# To control versioning, set an environment variable before committing:
+#   VERSION=SAME git commit -m "msg"     - Keep current version
+#   VERSION=2.0.0 git commit -m "msg"    - Set version to 2.0.0
+#   git commit -m "msg"                  - Auto-increment patch
+
+# Check if any non-ignored files are staged (excluding package.json and ignored files)
+STAGED_FILES=$(git diff --cached --name-only | grep -vE '\.md$|\.gitignore$|LICENSE$|package\.json$' || true)
+
+if [ -z "$STAGED_FILES" ]; then
+    # Only ignored files or package.json staged, skip version bump
+    exit 0
+fi
+
+# Get current version
+CURRENT_VERSION=$(node -p "require('./package.json').version" 2>/dev/null)
+if [ -z "$CURRENT_VERSION" ]; then
+    echo "⚠️  Could not read version from package.json"
+    exit 0
+fi
+
+# Check VERSION environment variable
+if [ "$VERSION" = "SAME" ] || [ "$VERSION" = "NO" ]; then
+    echo "🔒 VERSION=$VERSION - keeping version $CURRENT_VERSION"
+    exit 0
+fi
+
+# Check for explicit version (X.X.X format)
+if [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    NEW_VERSION="$VERSION"
+    if [ "$NEW_VERSION" != "$CURRENT_VERSION" ]; then
+        echo "📌 Setting version to $NEW_VERSION"
+        npm version "$NEW_VERSION" --no-git-tag-version --allow-same-version >/dev/null 2>&1
+        git add package.json
+    else
+        echo "📌 Version already at $NEW_VERSION"
+    fi
+    exit 0
+fi
+
+# No VERSION set - auto-increment patch version
+IFS='.' read -ra VERSION_PARTS <<< "$CURRENT_VERSION"
+MAJOR="${VERSION_PARTS[0]}"
+MINOR="${VERSION_PARTS[1]}"
+PATCH="${VERSION_PARTS[2]}"
+
+NEW_PATCH=$((PATCH + 1))
+NEW_VERSION="${MAJOR}.${MINOR}.${NEW_PATCH}"
+
+echo "⬆️  Auto-incrementing version: $CURRENT_VERSION → $NEW_VERSION"
+npm version "$NEW_VERSION" --no-git-tag-version --allow-same-version >/dev/null 2>&1
+git add package.json
+
+exit 0
