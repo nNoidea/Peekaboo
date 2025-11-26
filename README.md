@@ -81,22 +81,6 @@ npm run build
 -   **Bootstrap 5** — Styling
 -   **FFmpeg** — Video encoding & processing
 
-## 📁 Project Structure
-
-```
-src/
-├── main/                 # Electron main process
-│   ├── main.ts           # App entry point & window management
-│   ├── preload.ts        # Context bridge for IPC
-│   └── recorder/         # Recording engine
-│       ├── RecorderEngine.ts
-│       ├── backends/     # Platform-specific implementations
-│       └── formats/      # Output format profiles (MP4, GIF)
-└── renderer/             # React frontend
-    ├── App.tsx           # Main UI components
-    └── index.html
-```
-
 ## 🤝 Contributing
 
 Contributions are welcome! Feel free to open issues or submit pull requests.
