@@ -6,6 +6,22 @@ A lightweight, elegant screen recorder for Linux built with Electron.
 ![Platform](https://img.shields.io/badge/platform-Linux-lightgrey.svg)
 ![Electron](https://img.shields.io/badge/electron-39.x-47848F.svg)
 
+## 🎬 Demo
+
+https://github.com/nNoidea/Peekaboo/assets/vid/showcase.mp4
+
+> **Note:** If the video doesn't play, [click here to download](vid/showcase.mp4) or view it directly in the repository.
+
+*Yes, this showcase was recorded using Peekaboo itself! 🐣*
+
+## 💡 Background
+
+This project was inspired by [Peek](https://github.com/phw/peek), the now-discontinued screen recorder for Linux. The inspiration is purely in terms of the idea and UX approach — not the codebase.
+
+**Full transparency:** Peekaboo was developed almost entirely using AI coding agents. This started as an experiment in agentic coding, and I've primarily spent my time on prompting and manual testing while AI wrote the code based on how I wanted the app to function.
+
+I built this out of personal need — a quick tool to record my frontend development work for showcasing features. I'm not trying to pass off AI-generated code as my own; this is simply a practical solution born from curiosity about AI-assisted development.
+
 ## ✨ Features
 
 -   **Region Selection** — Record any portion of your screen by resizing the window
