@@ -35,9 +35,9 @@ function ControlWindow() {
     const isCompact = windowWidth < 150;
 
     return (
-        <div className="d-flex align-items-center justify-content-center bg-dark text-white h-100 draggable-topbar">
+        <div className="d-flex align-items-center justify-content-center bg-dark text-white h-100">
             <button
-                className={`btn btn-danger btn-sm ${isCompact ? "p-1" : "px-4"} no-drag d-flex align-items-center justify-content-center overflow-hidden`}
+                className={`btn btn-danger btn-sm ${isCompact ? "p-1" : "px-4"} d-flex align-items-center justify-content-center overflow-hidden`}
                 onClick={handleStop}
                 disabled={isStopping}
                 style={isCompact ? { width: "24px", height: "24px", minWidth: 0 } : { whiteSpace: "nowrap" }}
