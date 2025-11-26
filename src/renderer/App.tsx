@@ -136,7 +136,7 @@ function MainWindow() {
                 {!isRecording && (
                     <>
                         {/* Title and Settings - Combined container that gets pushed left */}
-                        <div className="d-flex align-items-center gap-2 flex-shrink-0 no-drag">
+                        <div className="d-flex align-items-center gap-2 flex-shrink-0">
                             {/* Title */}
                             <div className="fw-bold text-nowrap">Peekaboo</div>
 
@@ -147,7 +147,7 @@ function MainWindow() {
                             <div className="d-flex align-items-center gap-2 flex-shrink-0">
                                 {/* Format dropdown */}
                                 <select
-                                    className="form-select form-select-sm bg-secondary text-white border-0"
+                                    className="form-select form-select-sm bg-secondary text-white border-0 no-drag"
                                     style={{ width: "80px" }}
                                     value={format}
                                     onChange={(e) => setFormat(e.target.value)}
@@ -164,10 +164,10 @@ function MainWindow() {
                                     className="d-flex align-items-center gap-1"
                                     title="FPS"
                                 >
-                                    <span className="small text-muted">FPS</span>
+                                    <span className="small text-white-50">FPS</span>
                                     <input
                                         type="number"
-                                        className="form-control form-control-sm bg-secondary text-white border-0 p-1 text-center"
+                                        className="form-control form-control-sm bg-secondary text-white border-0 p-1 text-center no-drag"
                                         style={{ width: "40px" }}
                                         value={fps}
                                         onChange={(e) => setFps(Number(e.target.value))}
@@ -184,7 +184,7 @@ function MainWindow() {
                                     title="Show Mouse Cursor"
                                 >
                                     <input
-                                        className="form-check-input"
+                                        className="form-check-input no-drag"
                                         type="checkbox"
                                         id="showMouse"
                                         checked={showMouse}
@@ -193,7 +193,6 @@ function MainWindow() {
                                     <label
                                         className="form-check-label small text-white"
                                         htmlFor="showMouse"
-                                        style={{ cursor: "pointer" }}
                                     >
                                         Cursor
                                     </label>
@@ -208,7 +207,7 @@ function MainWindow() {
                                             title="Record System Audio"
                                         >
                                             <input
-                                                className="form-check-input"
+                                                className="form-check-input no-drag"
                                                 type="checkbox"
                                                 id="recordSystemAudio"
                                                 checked={recordSystemAudio}
@@ -217,7 +216,6 @@ function MainWindow() {
                                             <label
                                                 className="form-check-label small text-white"
                                                 htmlFor="recordSystemAudio"
-                                                style={{ cursor: "pointer" }}
                                             >
                                                 Audio (PC)
                                             </label>
@@ -229,7 +227,7 @@ function MainWindow() {
                                             title="Record Microphone"
                                         >
                                             <input
-                                                className="form-check-input"
+                                                className="form-check-input no-drag"
                                                 type="checkbox"
                                                 id="recordMic"
                                                 checked={recordMic}
@@ -238,7 +236,6 @@ function MainWindow() {
                                             <label
                                                 className="form-check-label small text-white"
                                                 htmlFor="recordMic"
-                                                style={{ cursor: "pointer" }}
                                             >
                                                 Audio (MIC)
                                             </label>
