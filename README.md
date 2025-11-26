@@ -1,4 +1,8 @@
-# Peekaboo 👀
+# Peekaboo
+
+<p align="center">
+  <img src="./src/assets/icon.png" alt="Peekaboo Logo">
+</p>
 
 A lightweight, elegant screen recorder for Linux built with Electron.
 
