@@ -125,6 +125,7 @@ npm run version:major
 ```
 
 **How it works:**
+
 1. Update version in `package.json` (manually or via npm scripts)
 2. Commit and push to `main`
 3. GitHub Actions builds and creates/replaces release for that version
