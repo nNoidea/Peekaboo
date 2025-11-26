@@ -148,7 +148,7 @@ function MainWindow() {
                                 {/* Format dropdown */}
                                 <select
                                     className="form-select form-select-sm bg-secondary text-white border-0 no-drag"
-                                    style={{ width: "80px" }}
+                                    style={{ width: "auto", minWidth: "70px" }}
                                     value={format}
                                     onChange={(e) => setFormat(e.target.value)}
                                 >
