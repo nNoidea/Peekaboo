@@ -15,8 +15,8 @@ jobs:
         permissions:
             contents: write
         outputs:
-            version: ${{ steps.version.outputs.version }}
-            new_version: ${{ steps.version.outputs.new_version }}
+            version: ${{ steps.version.outputs.new_version }}
+            should_bump: ${{ steps.version.outputs.should_bump }}
 
         steps:
             - name: Checkout code
@@ -36,27 +36,35 @@ jobs:
               run: |
                   # Get commit message
                   COMMIT_MSG=$(git log -1 --pretty=%B)
-
-                  # Check for VERSION[x.x.x] pattern in commit message
-                  if [[ "$COMMIT_MSG" =~ VERSION\[([0-9]+\.[0-9]+\.[0-9]+)\] ]]; then
+                  CURRENT_VERSION=$(node -p "require('./package.json').version")
+                  
+                  # Check for VERSION[NO] - rebuild same version
+                  if [[ "$COMMIT_MSG" =~ VERSION\[NO\] ]]; then
+                      NEW_VERSION="$CURRENT_VERSION"
+                      SHOULD_BUMP="false"
+                      echo "Rebuilding same version: $NEW_VERSION"
+                  # Check for VERSION[x.x.x] - explicit version
+                  elif [[ "$COMMIT_MSG" =~ VERSION\[([0-9]+\.[0-9]+\.[0-9]+)\] ]]; then
                       NEW_VERSION="${BASH_REMATCH[1]}"
+                      SHOULD_BUMP="true"
                       echo "Found explicit version: $NEW_VERSION"
                   else
                       # Auto-increment patch version
-                      CURRENT_VERSION=$(node -p "require('./package.json').version")
                       IFS='.' read -ra VERSION_PARTS <<< "$CURRENT_VERSION"
                       MAJOR="${VERSION_PARTS[0]}"
                       MINOR="${VERSION_PARTS[1]}"
                       PATCH="${VERSION_PARTS[2]}"
                       NEW_PATCH=$((PATCH + 1))
                       NEW_VERSION="${MAJOR}.${MINOR}.${NEW_PATCH}"
+                      SHOULD_BUMP="true"
                       echo "Auto-incremented version: $CURRENT_VERSION -> $NEW_VERSION"
                   fi
 
-                  echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
                   echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+                  echo "should_bump=$SHOULD_BUMP" >> $GITHUB_OUTPUT
 
             - name: Update package.json version
+              if: steps.version.outputs.should_bump == 'true'
               run: |
                   npm version ${{ steps.version.outputs.new_version }} --no-git-tag-version
 
@@ -73,6 +81,7 @@ jobs:
                   path: release/*.AppImage
 
             - name: Commit version bump
+              if: steps.version.outputs.should_bump == 'true'
               run: |
                   git config user.name "github-actions[bot]"
                   git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -87,24 +96,29 @@ jobs:
             contents: write
 
         steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
             - name: Download artifacts
               uses: actions/download-artifact@v4
               with:
                   name: linux-build
                   path: release
 
-            - name: Delete existing latest release
+            - name: Delete existing release with same version (if exists)
               env:
                   GH_TOKEN: ${{ github.token }}
               run: |
-                  gh release delete latest --yes || true
-                  git push origin :refs/tags/latest || true
+                  VERSION="v${{ needs.build.outputs.version }}"
+                  echo "Checking for existing release: $VERSION"
+                  gh release delete "$VERSION" --yes || true
+                  git push origin ":refs/tags/$VERSION" || true
 
             - name: Create Release
               uses: softprops/action-gh-release@v2
               with:
-                  tag_name: latest
-                  name: "Latest Build (v${{ needs.build.outputs.new_version }})"
+                  tag_name: "v${{ needs.build.outputs.version }}"
+                  name: "Peekaboo v${{ needs.build.outputs.version }}"
                   files: release/*.AppImage
                   generate_release_notes: true
                   draft: false

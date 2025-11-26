@@ -108,6 +108,30 @@ Contributions are welcome! Feel free to open issues or submit pull requests.
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
+## 🔄 Versioning & Releases
+
+Releases are automated via GitHub Actions when pushing to `main`. Use special tags in your commit message to control versioning:
+
+| Commit Message | Behavior |
+|----------------|----------|
+| *(no tag)* | Auto-increment patch version (`1.0.0` → `1.0.1`) |
+| `VERSION[2.0.0]` | Set explicit version to `2.0.0` |
+| `VERSION[NO]` | Rebuild same version (replaces existing release) |
+
+**Examples:**
+```bash
+# Normal commit - auto bumps patch version
+git commit -m "Add new feature"
+
+# Set specific version
+git commit -m "Major update VERSION[2.0.0]"
+
+# Rebuild without version bump (e.g., adding new build artifacts)
+git commit -m "Add .deb build VERSION[NO]"
+```
+
+> **Note:** Builds only trigger on pushes to `main`. Changes to `.md` files, `.gitignore`, and `LICENSE` are ignored.
+
 ## 📄 License
 
 This project is licensed under the ISC License.
