@@ -11,8 +11,6 @@ A lightweight, elegant screen recorder for Linux built with Electron.
 
 https://github.com/user-attachments/assets/f7071cd9-8f07-4c10-b7ac-9580e8cbbd1e
 
-> **Note:** If the video doesn't play, [click here to download](vid/showcase.mp4) or view it directly in the repository.
-
 _Yes, this showcase was recorded using Peekaboo itself! 🐣_
 
 ## 💡 Background
