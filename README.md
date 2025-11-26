@@ -70,7 +70,7 @@ npm run build
 3. Configure your settings (format, FPS, mouse visibility, audio)
 4. Click **Start Recording**
 5. A floating control bar appears — click **Stop Recording** when done
-6. Choose where to save your recording
+6. Recording is automatically saved to `~/Videos/Peekaboo/`
 
 ## 🏗️ Tech Stack
 
